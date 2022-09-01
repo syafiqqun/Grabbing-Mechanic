@@ -1,0 +1,127 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://assets/testure_512/tex_diffuse.png" type="Texture" id=1]
+[ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/testure_512/tex_roughness.png" type="Texture" id=3]
+[ext_resource path="res://scenes/cubes/small_cube.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/cubes/cube.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/world/env_3.tres" type="Environment" id=6]
+
+[sub_resource type="ConcavePolygonShape" id=10]
+data = PoolVector3Array( 40, 0, 40, 13.3333, 0, 40, 40, 0, 13.3333, 13.3333, 0, 40, 13.3333, 0, 13.3333, 40, 0, 13.3333, 13.3333, 0, 40, -13.3333, 0, 40, 13.3333, 0, 13.3333, -13.3333, 0, 40, -13.3333, 0, 13.3333, 13.3333, 0, 13.3333, -13.3333, 0, 40, -40, 0, 40, -13.3333, 0, 13.3333, -40, 0, 40, -40, 0, 13.3333, -13.3333, 0, 13.3333, 40, 0, 13.3333, 13.3333, 0, 13.3333, 40, 0, -13.3333, 13.3333, 0, 13.3333, 13.3333, 0, -13.3333, 40, 0, -13.3333, 13.3333, 0, 13.3333, -13.3333, 0, 13.3333, 13.3333, 0, -13.3333, -13.3333, 0, 13.3333, -13.3333, 0, -13.3333, 13.3333, 0, -13.3333, -13.3333, 0, 13.3333, -40, 0, 13.3333, -13.3333, 0, -13.3333, -40, 0, 13.3333, -40, 0, -13.3333, -13.3333, 0, -13.3333, 40, 0, -13.3333, 13.3333, 0, -13.3333, 40, 0, -40, 13.3333, 0, -13.3333, 13.3333, 0, -40, 40, 0, -40, 13.3333, 0, -13.3333, -13.3333, 0, -13.3333, 13.3333, 0, -40, -13.3333, 0, -13.3333, -13.3333, 0, -40, 13.3333, 0, -40, -13.3333, 0, -13.3333, -40, 0, -13.3333, -13.3333, 0, -40, -40, 0, -13.3333, -40, 0, -40, -13.3333, 0, -40 )
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 80, 80 )
+subdivide_width = 2
+subdivide_depth = 2
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.870588, 0.870588, 0.870588, 1 )
+albedo_texture = ExtResource( 1 )
+roughness_texture = ExtResource( 3 )
+uv1_scale = Vector3( 10, 10, 1 )
+
+[sub_resource type="SphereMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.8, 0.87451, 0.996078, 1 )
+albedo_texture = ExtResource( 1 )
+roughness = 0.48
+roughness_texture = ExtResource( 3 )
+uv1_scale = Vector3( 2, 2, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+
+[sub_resource type="CubeMesh" id=11]
+size = Vector3( 1, 1, 2 )
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_color = Color( 0.858824, 0.423529, 0.423529, 1 )
+
+[node name="World" type="Spatial"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.702861, 0.569671, -0.425982, 0, 0.598856, 0.800857, 0.711327, -0.562891, 0.420913, 0, 11.877, 0 )
+shadow_enabled = true
+directional_shadow_max_distance = 70.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 6 )
+
+[node name="Floor" type="StaticBody" parent="."]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor"]
+shape = SubResource( 10 )
+
+[node name="FloorMesh" type="MeshInstance" parent="Floor"]
+mesh = SubResource( 1 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.02049, 0.971567, 0 )
+mesh = SubResource( 5 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 6 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.45755, 0.971567, 0 )
+mesh = SubResource( 5 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 7 )
+
+[node name="PickableObjects" type="Spatial" parent="."]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Cube" parent="PickableObjects" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42761, 0.969259, 1.27182 )
+
+[node name="MeshInstance" type="MeshInstance" parent="PickableObjects/Cube"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.32602 )
+mesh = SubResource( 11 )
+material/0 = SubResource( 12 )
+
+[node name="Cube2" parent="PickableObjects" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42761, 0.969259, -1.53078 )
+
+[node name="Cube3" parent="PickableObjects" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42761, 0.969259, -4.21376 )
+
+[node name="SmallCube" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.20498, 0.498641, 3.06579 )
+
+[node name="SmallCube2" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.20498, 0.498641, 0.852146 )
+
+[node name="SmallCube3" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.20498, 0.498641, -0.865067 )
+
+[node name="SmallCube4" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.50744, 0.498641, 3.06579 )
+
+[node name="SmallCube5" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.50744, 0.498641, 0.852146 )
+
+[node name="SmallCube6" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.50744, 0.498641, -0.865067 )
+
+[node name="SmallCube7" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.91697, 0.498641, 3.06579 )
+
+[node name="SmallCube8" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.91697, 0.498641, 0.852146 )
+
+[node name="SmallCube9" parent="PickableObjects" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.91697, 0.498641, -0.865067 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.923873, 0.3827, 0, -0.3827, 0.923873, 0, 5.51066, 25.9491 )
+current = true
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52526, 2.01029, 15.681 )
